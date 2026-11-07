@@ -19,7 +19,6 @@ function getModel() {
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function classify(e: unknown): AiError {
-  console.error("Gemini error:", (e as { status?: number })?.status, (e as Error)?.message?.slice(0, 300)); // TEMPORARY
   if (e instanceof AiError) return e;
   const err = e as { status?: number; name?: string };
   if (err?.name === "TimeoutError" || err?.name === "AbortError") return new AiError("timeout");

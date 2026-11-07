@@ -124,3 +124,27 @@ export async function updatePassword(input: { password: string }): Promise<Actio
   if (error) return { error: "Could not update your password. Request a new reset link and try again." };
   redirect("/dashboard");
 }
+
+export async function deleteAccount(input: { confirm: string }): Promise<ActionResult> {
+  if (input.confirm !== "DELETE") return { error: "Type DELETE to confirm." };
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Please log in again." };
+
+  // Storage files are not removed by database cascades, so delete them first.
+  const { data: files, error: listError } = await supabase.storage.from("resumes").list(user.id, { limit: 1000 });
+  if (listError) return { error: "Could not delete your files. Nothing was deleted. Please try again." };
+  if (files && files.length > 0) {
+    const { error: removeError } = await supabase.storage
+      .from("resumes")
+      .remove(files.map((f) => `${user.id}/${f.name}`));
+    if (removeError) return { error: "Some files could not be removed. Please try again." };
+  }
+
+  const { error } = await supabase.rpc("delete_my_account");
+  if (error) return { error: "Your files were removed, but the account could not be deleted. Please try again." };
+
+  await supabase.auth.signOut({ scope: "local" });
+  redirect("/");
+}

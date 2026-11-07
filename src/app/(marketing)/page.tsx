@@ -208,7 +208,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="border-t border-[var(--l-line)] px-6 py-8 text-center text-xs text-[var(--l-muted)]">
-        © 2026 Resume AI. ATS scores are AI-generated estimates, not guarantees.
+        © 2026 Resume AI. ATS scores are AI-generated estimates, not guarantees. <Link href="/privacy" className="underline underline-offset-4">Privacy</Link>
       </footer>
     </div>
   );

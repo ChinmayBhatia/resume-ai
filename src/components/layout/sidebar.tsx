@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FileText, ScanSearch, Mic, History } from "lucide-react";
+import { LayoutDashboard, FileText, ScanSearch, Mic, History, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { href: "/ats", label: "ATS Analysis", icon: ScanSearch },
   { href: "/interviews/new", label: "Mock Interview", icon: Mic },
   { href: "/interviews", label: "History", icon: History },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
